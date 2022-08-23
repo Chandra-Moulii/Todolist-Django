@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static '/Css/Home.css' %}" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static '/Images/Favicon.png' %}"
+    />
+    <script src="{% static '/Js/script.js' %}" defer></script>
+    <title>To-Do List</title>
+  </head>
+  <body>
+    <div class="Container">
+      <div class="Header">
+        <h1>
+          To-Do List
+          <img src="{% static '/Images/Favicon.png' %}" alt="" />
+        </h1>
+        <div class="Flex moregap">
+          <a href="">Dark Mode</a>
+          <a href="{% url 'Logout' %}">Logout</a>
+        </div>
+      </div>
+      <div class="Body">
+        <h3 class="Flex">
+          Edit Todo<span class="Error">{{Errormessage}}</span>
+          {% if messages %} {% for message in messages %}
+          <small>
+            <span class="" id="Remove">{{message}}</span>
+          </small>
+          {% endfor %} {% endif %}
+        </h3>
+        <form
+          class="Addtodo"
+          action="{% url 'Updatetodo' populate.id %}"
+          method="POST"
+        >
+          {% csrf_token %}
+          <input
+            class="Strech"
+            type="text"
+            name="updatetask"
+            value="{{populate.todo}}"
+            placeholder="Add a todo and press enter"
+          />
+          <button type="submit">Save</button>
+          <a href="{% url 'Todo' %}"><button type="button">Cancel</button></a>
+          <a href="{% url 'Deletetodo' populate.id%}"
+            ><button type="button">Delete</button></a
+          >
+          <p>
+            <small><i>You created this task on {{populate.created_at | date:"m/j/y"}}</i></small>
+          </p>
+        </form>
+      </div>
+      <div class="Footer">
+        <p><i>Simple and minimalistic todo website created by Mouli</i></p>
+      </div>
+    </div>
+  </body>
+</html>

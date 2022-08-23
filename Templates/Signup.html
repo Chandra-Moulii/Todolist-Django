@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static '/Css/Home.css' %}" />
+    <script src="{% static '/Js/script.js' %}" defer></script>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static '/Images/Favicon.png' %}"
+    />
+    <title>To-Do List</title>
+  </head>
+  <body>
+    <div class="Container">
+      <div class="Header">
+        <h1>
+          To-Do List
+          <img src="{% static '/Images/Favicon.png' %}" alt="" />
+        </h1>
+      </div>
+      <div class="Body">
+        <h2>Signup</h2>
+        <form action="{% url 'Signup' %}" method="POST">
+          {% csrf_token %}
+          <label for="Username">Username</label>
+          <input
+            required
+            type="text"
+            name="Username"
+            id="Username"
+            placeholder="Jhondoe"
+          />
+          <label for="">Email</label>
+          <input type="email" name="Email" placeholder="Email" required />
+          <label for="Password">Password</label>
+          <input
+            required
+            type="password"
+            name="Password"
+            id="Password"
+            placeholder="****************"
+          />
+          <label for="Password">Confirm Password</label>
+          <input
+            required
+            type="password"
+            name="ConfirmPassword"
+            id="Confirmpassword"
+            placeholder="****************"
+          />
+          <p id="weak"></p>
+          <p id="medium"></p>
+          <p id="strong"></p>
+          {% if messages %} {% for message in messages %}
+          <small>
+            <p class="Error" id="Remove">{{message}}</p>
+          </small>
+          {% endfor %} {% endif %}
+          <button class="Signup" type="submit">Signup</button>
+          <p class="Signup">
+            Have an account?<a href="{% url 'Home' %}"> Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

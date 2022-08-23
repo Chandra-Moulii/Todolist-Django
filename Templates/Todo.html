@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static '/Css/Home.css' %}" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static '/Images/Favicon.png' %}"
+    />
+    <script src="{% static '/Js/script.js' %}" defer></script>
+    <title>To-Do List</title>
+  </head>
+  <body>
+    <div class="Container">
+      <div class="Header">
+        <h1>
+          To-Do List
+          <img src="{% static '/Images/Favicon.png' %}" alt="" />
+        </h1>
+        <div class="Flex moregap">
+          <a onclick="Changetheme()">Dark Mode</a>
+          <a href="{% url 'Logout' %}">Logout</a>
+        </div>
+      </div>
+      <div class="Body">
+        <h3 class="Flex">
+          Welcome {{user.username}}
+          {% if messages %} {% for message in messages %}
+          <small>
+            <span class="Erro" id="Remove">  ({{message}})</span>
+          </small>
+          {% endfor %} {% endif %}
+          <span><small><a href="{% url 'Todo' %}">{{clear}}</a></small></span>
+        </h3>
+        <div class="Flexgrow">
+          <form class="Addtodo" action="{% url 'Createtodo' %}" method="POST">
+            {% csrf_token %}
+            <input
+              class="Strech"
+              type="text"
+              name="Addtask"
+              placeholder="Add a todo and press enter"
+              required
+            />
+            <!-- <a href="{% url 'Createtodo' %}"><button class="Float" type="submit">Add</button></a>  -->
+          </form>
+          <form action="{% url 'Search'  %}" method="POST">
+            {% csrf_token %}
+            <input
+              value="{{value}}"
+              class="Strech"
+              name="Search"
+              type="text"
+              placeholder=" &#128269 Search tasks"
+            />
+          </form>
+        </div>
+        <p class="Stats">
+          <a href="{% url 'Todo' %}">Tasks ({{Total}})&nbsp;</a> |
+          <!-- <a href="{}">Completed tasks {{Completed.count}}&nbsp;</a> | -->
+          <a href="{% url 'Uncompleted' %}"
+            >Uncompleted tasks ({{Remaining}})
+          </a>
+          {% if Todos_here %}
+          <a href="{% url 'Clear' %}">| Clear all tasks</a>
+          {% endif %}
+        </p>
+        <p>{{Message}}</p>
+        {% if Todos_here %} {% for i in Todos_here %} {% if i.completed %}
+        <div class="Todo" draggable="true">
+          <div class="Flex">
+            <a href="{% url 'Redotodo' i.id %}">
+              <section id="over" onclick="Transform()"></section>
+            </a>
+            <a href="{% url 'Redotodo' i.id %}">
+              <p class="completed"><i>{{i.todo}}</i></p>
+            </a>
+          </div>
+          <div class="Flex">
+            <a href="{% url 'Deletetodo' i.id %}" title="Delete">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17 17L1 1M17 1L1 17"
+                  stroke="black"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+        {% else %}
+        <div class="Todo">
+          <div class="Flex">
+            <a href="{% url 'Completed' i.id %}">
+              <section onclick="Transform()"></section>
+            </a>
+            <a href="{% url 'Completed' i.id %}">
+              <p>{{i.todo}}</p>
+            </a>
+          </div>
+          <div class="Flex">
+            <a href="{% url 'Edit' i.id %}">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.5612 1.43903C15.1192 -0.00397241 14.0362 0.212028 14.0362 0.212028L7.9842 6.26403L1.2102 13.037L0.200195 17.799L4.96319 16.789L11.7372 10.018L17.7892 3.96603C17.7882 3.96603 18.0052 2.88303 16.5612 1.43903V1.43903ZM4.68019 16.217L3.0562 16.567C2.87647 16.2221 2.64363 15.9076 2.3662 15.635C2.09334 15.3576 1.7789 15.1245 1.4342 14.944L1.7842 13.321L2.2542 12.852C2.2542 12.852 3.1372 12.87 4.1352 13.868C5.1322 14.864 5.1512 15.749 5.1512 15.749L4.68019 16.217V16.217Z"
+                  fill="#414141"
+                />
+              </svg>
+            </a>
+            <a href="{% url 'Deletetodo' i.id %}" title="Delete">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17 17L1 1M17 1L1 17"
+                  stroke="black"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+        {% endif %} {% endfor %} {% else %}
+        <p class="Middle">No tasks here😔add a task</p>
+        {% endif %}
+      </div>
+      <div class="Footer">
+        <!-- <p>
+          <i><b>Hover on a task to edit or delete</b></i>
+        </p> -->
+        <!-- <br /> -->
+        <p><i>Simple and minimalistic todo website created by Mouli</i></p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static '/Css/Home.css' %}" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static '/Images/Favicon.png' %}"
+    />
+    <title>To-Do List</title>
+  </head>
+  <body>
+    <div class="Container">
+      <div class="Header">
+        <h1>
+          To-Do List
+          <img src="{% static '/Images/Favicon.png' %}" alt="" />
+        </h1>
+      </div>
+      <div class="Body">
+        <h2>Login</h2>
+        <form action="{% url 'Login' %}" method="POST">
+          {% csrf_token %}
+          <label for="Username">Username</label>
+          <input
+            type="text"
+            name="Username"
+            id="Username"
+            placeholder="Jhondoe"
+          />
+          <label for="Password">Password</label>
+          <input
+            type="password"
+            name="Password"
+            id="Password"
+            placeholder="****************"
+          />
+          {% if messages %} {% for message in messages %}
+          <small>
+            <p class="Error" id="Remove">{{message}}</p>
+          </small>
+          {% endfor %} {% endif %}
+          <button class="Login" type="submit">Login</button>
+          <p class="Signup">Don't have an account?<a href="{% url 'Signup' %}"> Signup</a></p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
