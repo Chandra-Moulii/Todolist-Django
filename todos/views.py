@@ -22,7 +22,7 @@ def Login(request):
             if user is not None:
                 auth.login(request, user)
                 return redirect('Todo')
-            messages.error(request, 'Invalid Credentials')
+            messages.error(request, 'Incorrect username or password')
             return redirect('/')
     return redirect('/')
 
